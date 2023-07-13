@@ -2,9 +2,17 @@
     <div class="nav-wrapper">
         <a href="#" class="brand-logo">Node App</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="/">Main</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/add">JavaScript</a></li>
+            {{#if isHome}}  <li><a class="active" href="/">Main</a></li>
+            {{else}} <li><a href="/">Main</a></li>
+            {{/if}}
+
+    {{#if isAbout}}<li><a class="active" href="/about">About</a></li>
+    {{else}}<li><a href="/about">About</a></li>
+    {{/if}}
+
+    {{#if isJS}}<li><a  class="active" href="/add">JavaScript</a></li>
+    {{else}}<li><a href="/add">JavaScript</a></li>
+    {{/if}}
         </ul>
     </div>
 </nav>
