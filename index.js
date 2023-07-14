@@ -1,7 +1,14 @@
+/*import {mainPageRoute} from "./routes/main";*/
+
 const express = require('express');
 const expHandleB = require('express-handlebars')
 const exprApp = express()
 const port = process.env.PORT || 3000
+const mainPageRoute = require('./routes/main');
+const aboutPageRoute = require('./routes/about');
+const addPageRoute = require('./routes/add');
+const bodyParser = require('body-parser');
+/*import bodyParser from 'body-parser'*/
 
 const hbs = expHandleB.create({
     defaultLayout: 'index',
@@ -13,25 +20,11 @@ exprApp.set('view engine', 'hbs');
 exprApp.set('views','views');
 
 exprApp.use(express.static('public'))
-exprApp.get('/', (req , res) => {
-    res.render('index',{
-        title:"Main page",
-        isHome: true,
-    })
-});
+exprApp.use(bodyParser({}));
+exprApp.use('/', mainPageRoute);
+exprApp.use('/about', aboutPageRoute);
+exprApp.use('/add', addPageRoute);
 
-exprApp.get('/about', (req, res) => {
-    res.render('about',{
-        title:"About",
-        isAbout: true,
-    })
-});
-exprApp.get('/add', (req, res) => {
-    res.render('add',{
-        title:"Java script",
-        isJS: true,
-    })
-});
 
 /*start express App*/
 exprApp.listen(port, () => {

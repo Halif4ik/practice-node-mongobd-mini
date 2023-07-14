@@ -1,1 +1,45 @@
-<h1>add JavaScript</h1>
+<h1>Create new user </h1>
+<form action="/add" method="POST">
+    <div class="row">
+        <div class="input-field col s6">
+           <!-- <i class="material-icons prefix">account_circle</i>-->
+            <input placeholder="Placeholder" name="first_name" id="first_name" type="text" class="validate" required>
+            <label for="first_name">First Name</label>
+            <span class="helper-text" data-error="Min tree symbols" ></span>
+        </div>
+        <div class="input-field col s6">
+            <input id="last_name" name="last_name" type="text" class="validate">
+            <label for="last_name">Last Name</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            <input id="password"  name="password" type="password" class="validate">
+            <label for="password">Password</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            <input id="email" name="email" type="email" class="validate">
+            <label for="email">Email</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            This is an inline input field:
+            <div class="input-field inline">
+                <input id="img_inline" name="img" type="text" class="validate" required>
+                <label for="img_inline">Image</label>
+                <span class="helper-text" data-error="Please enter URL Img" data-success="OK" ></span>
+            </div>
+        </div>
+    </div>
+
+    <input  name="submit" required="true" type="submit" role="button" value="Register"
+           aria-label="Submit" data-input-type="submit"
+           style="top: 537px; width: 128px; height: 44px; border-radius: 4px; letter-spacing: 0em; font-size: 16px; font-weight: bold;
+           position: absolute; background-color: rgb(0, 159, 227); border: 0px solid rgb(255, 255, 255); color: rgb(255, 255, 255);
+           font-family: Arial, Helvetica, sans-serif; line-height: 1; opacity: 1; box-shadow: none; left: 59vw; text-align: center;"
+           draggable="false" data-shadow-distance="0" data-radius="9.09">
+
+</form>
