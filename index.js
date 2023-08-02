@@ -5,7 +5,8 @@ const expHandleB = require('express-handlebars')
 const exprApp = express()
 const port = process.env.PORT || 3000
 const mainPageRoute = require('./routes/main');
-const aboutPageRoute = require('./routes/about');
+const cardRoute = require('./routes/card');
+const allUPageRoute = require('./routes/all');
 const addPageRoute = require('./routes/add');
 const bodyParser = require('body-parser');
 /*import bodyParser from 'body-parser'*/
@@ -22,8 +23,9 @@ exprApp.set('views','views');
 exprApp.use(express.static('public'))
 exprApp.use(bodyParser({}));
 exprApp.use('/', mainPageRoute);
-exprApp.use('/about', aboutPageRoute);
+exprApp.use('/all', allUPageRoute);
 exprApp.use('/add', addPageRoute);
+exprApp.use('/card', cardRoute);
 
 
 /*start express App*/

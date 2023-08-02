@@ -11,11 +11,12 @@ addPageRoute.get('/', (req, res) => {
         isAbout: true,
     })
 })
+
 addPageRoute.post('/', async (req, res) => {
     /*const headers = req.headers;*/
     const reqBody = req.body;
-    const newProd = await userRepository.createProduct(reqBody.first_name, reqBody.last_name, reqBody.password,reqBody.email);
+    const newProd = await userRepository.createProduct(reqBody.first_name, reqBody.last_name, reqBody.price,reqBody.email,reqBody.img);
 
-    res.status(200).send(newProd)
+    res.status(200).send(newProd).redirect('/');
 
 })

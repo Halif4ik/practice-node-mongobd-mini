@@ -1,18 +1,30 @@
 <nav>
     <div class="nav-wrapper">
-        <a href="#" class="brand-logo">Node App</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-            {{#if isHome}}  <li><a class="active" href="/">Main</a></li>
-            {{else}} <li><a href="/">Main</a></li>
+        <a href="#" class="brand-logo">Exchange of developers</a>
+        <ul id="nav-mobile" class="right hide-on-small-only">
+            {{#if isHome}}
+                <li><a class="active" href="/">Main</a></li>
+            {{else}}
+                <li><a href="/">Main</a></li>
             {{/if}}
 
-    {{#if isAbout}}<li><a class="active" href="/about">All users</a></li>
-    {{else}}<li><a href="/about">All users</a></li>
-    {{/if}}
+            {{#if isAbout}}
+                <li><a class="active" href="/all">All users</a></li>
+            {{else}}
+                <li><a href="/all">All users</a></li>
+            {{/if}}
 
-    {{#if isJS}}<li><a  class="active" href="/add">Create new user</a></li>
-    {{else}}<li><a href="/add">Create new user</a></li>
-    {{/if}}
+            {{#if isJS}}
+                <li><a class="active" href="/add">Create new user</a></li>
+            {{else}}
+                <li><a href="/add">Create new user</a></li>
+            {{/if}}
+
+            {{#if isCard}}
+                <li><a class="active" href="/card">Card</a></li>
+            {{else}}
+                <li><a href="/card">Card</a></li>
+            {{/if}}
         </ul>
     </div>
 </nav>

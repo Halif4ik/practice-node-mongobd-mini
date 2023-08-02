@@ -5,3 +5,36 @@
 li > .active {
     background: #e95a65;
 }
+.card {
+    width: 29vw;
+}
+.col.s12.m7>.card {
+    width: 100%;
+}
+.col.s12.m7 {
+    margin-top: 5vw;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0px);
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.card .card-content P.price, .price.big {
+    font-size: 22px;
+}
+.card-action.action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+INPUT[name="submit"]:hover {
+    background-color: #ffd8a6 !important;
+}
+INPUT[name="submit"] {
+    transition: 500ms;
+    cursor: pointer;
+}
