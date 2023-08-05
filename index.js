@@ -8,6 +8,7 @@ const mainPageRoute = require('./routes/main');
 const cardRoute = require('./routes/card');
 const allUPageRoute = require('./routes/all');
 const addPageRoute = require('./routes/add');
+const path = require('path');
 const bodyParser = require('body-parser');
 /*import bodyParser from 'body-parser'*/
 
@@ -20,7 +21,8 @@ exprApp.engine('hbs',hbs.engine);
 exprApp.set('view engine', 'hbs');
 exprApp.set('views','views');
 
-exprApp.use(express.static('public'))
+/*exprApp.use(express.static('public'))*/
+exprApp.use(express.static(path.join(__dirname,'public')))
 exprApp.use(bodyParser({}));
 exprApp.use('/', mainPageRoute);
 exprApp.use('/all', allUPageRoute);

@@ -7,7 +7,7 @@ module.exports = mainPageRoute;
 /*export const mainPageRoute = Router({});*/
 
 mainPageRoute.get('/', (req, res) => {
-    res.render('index', {
+    res.render('main', {
         title: "Main page",
         isHome: true,
     })

@@ -1,1 +1,30 @@
-<h1>This will be card</h1>
+<h2>Card</h2>
+<div class="card-container">
+    {{#if card.users.length}}
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Number of months</th>
+                <th>Price per months</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {{#each card.users}}
+                <tr>
+                    <td>{{firstName}} {{lastName}}</td>
+                    <td>{{count}}</td>
+                    <td>{{price}}</td>
+                    <td>
+                        <button class="btn btm-small js-remove" data-id="{{id}}">Decrease</button>
+                    </td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+       <p>  <strong>Total price:</strong> <span class="price-total">{{card.price}}</span></p>
+    {{else}}<p>Temporary empty card</p>
+    {{/if}}
+</div>

@@ -1,7 +1,9 @@
 .nav-wrapper {
     padding: 0 2rem;
 }
-
+strong{
+    font-weight: 700;
+}
 li > .active {
     background: #e95a65;
 }
@@ -23,7 +25,7 @@ li > .active {
     justify-content: space-around;
     flex-wrap: wrap;
 }
-.card .card-content P.price, .price.big {
+.card .card-content P.price, .price.big, .price-total {
     font-size: 22px;
 }
 .card-action.action {
