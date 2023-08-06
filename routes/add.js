@@ -15,8 +15,20 @@ addPageRoute.get('/', (req, res) => {
 addPageRoute.post('/', async (req, res) => {
     /*const headers = req.headers;*/
     const reqBody = req.body;
-    const newProd = await userRepository.createProduct(reqBody.first_name, reqBody.last_name, reqBody.price,reqBody.email,reqBody.img);
+    const newUserRepoz =  new userRepository({
+        firstName: reqBody.first_name,
+        price: reqBody.price,
+        img: reqBody.img,
+        email: reqBody.email,
+        lastName: reqBody.last_name,
+    });
 
-    res.status(200).send(newProd).redirect('/');
+    try {
+        await newUserRepoz.save()
+        res.status(200).redirect('/');
+    }catch (e){
+        console.log(e);
+    }
+
 
 })
