@@ -8,7 +8,7 @@ const userRepository = require('../repositories/user-repositary');
 addPageRoute.get('/', (req, res) => {
     res.render('add',{
         title:"Add User",
-        isAbout: true,
+        isAdd: true,
     })
 })
 

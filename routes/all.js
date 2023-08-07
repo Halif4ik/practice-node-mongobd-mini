@@ -3,15 +3,16 @@ const allUPageRoute = Router();
 module.exports = allUPageRoute;
 /*import {body, validationResult} from 'express-validator'*/
 const {params, validationResult} = require('express-validator');
-const userRepository = require('../repositories/user-repositary');
+const UserRepository = require('../repositories/user-repositary');
 
 
 allUPageRoute.get('/', async (req, res) => {
-    const parsedAllUser = await userRepository.getAllFromBd();
+    const arrAllUsers = await UserRepository.find();
+    console.log('arrAllUsers-',arrAllUsers);
     res.render('all', {
         title: "About",
-        isAbout: true,
-        arrAllUsers: parsedAllUser,
+        isAllUsers: true,
+        arrAllUsers: arrAllUsers,
     })
 });
 
@@ -20,7 +21,7 @@ allUPageRoute.get('/:ID/edit', async (req, res) => {
     const reqProdID = req.params.ID;
     if (!allow) return res.redirect('/');
 
-    let foundUser = await userRepository.getFromBdByID(reqProdID);
+    let foundUser = await UserRepository.findById(reqProdID);
     res.render('userEdit', {
         title: `Changing ${foundUser.lastName}`,
         user: foundUser,
@@ -30,14 +31,16 @@ allUPageRoute.get('/:ID/edit', async (req, res) => {
 /*post edit user res.status(202).send(changedUser).redirect('/all'); */
 allUPageRoute.post('/edit', async (req, res) => {
     const reqBody = req.body;
-    const changedUser = await userRepository.updateUser(reqBody.first_name, reqBody.last_name, reqBody.price,reqBody.email,reqBody.img,reqBody.id);
+    const id = reqBody.id;
+    delete reqBody.id
+    const changedUser = await UserRepository.findByIdAndUpdate(id, reqBody);
     res.status(201).redirect('/all');
 
 })
 
 allUPageRoute.get('/:ID', async (req, res) => {
     const reqProdID = req.params.ID;
-    let foundUser = await userRepository.getFromBdByID(reqProdID);
+    let foundUser = await UserRepository.findById(reqProdID);
     foundUser ? res.render('singleDev', {
         layout: 'empty',
         title: foundUser.lastName,
