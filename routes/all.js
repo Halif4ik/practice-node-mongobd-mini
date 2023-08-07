@@ -7,8 +7,7 @@ const UserRepository = require('../repositories/user-repositary');
 
 
 allUPageRoute.get('/', async (req, res) => {
-    const arrAllUsers = await UserRepository.find();
-    console.log('arrAllUsers-',arrAllUsers);
+    const arrAllUsers = await UserRepository.find({}).lean();
     res.render('all', {
         title: "About",
         isAllUsers: true,
@@ -21,7 +20,7 @@ allUPageRoute.get('/:ID/edit', async (req, res) => {
     const reqProdID = req.params.ID;
     if (!allow) return res.redirect('/');
 
-    let foundUser = await UserRepository.findById(reqProdID);
+    let foundUser = await UserRepository.findById(reqProdID).lean();
     res.render('userEdit', {
         title: `Changing ${foundUser.lastName}`,
         user: foundUser,
@@ -40,7 +39,7 @@ allUPageRoute.post('/edit', async (req, res) => {
 
 allUPageRoute.get('/:ID', async (req, res) => {
     const reqProdID = req.params.ID;
-    let foundUser = await UserRepository.findById(reqProdID);
+    let foundUser = await UserRepository.findById(reqProdID).lean();
     foundUser ? res.render('singleDev', {
         layout: 'empty',
         title: foundUser.lastName,
@@ -51,7 +50,6 @@ allUPageRoute.get('/:ID', async (req, res) => {
 function titleValidMiddleware() {
     return params().trim().isLength({min: 36, max: 36}).escape().withMessage("Wrong user ID");
 }
-
 function checkValidationInMiddleWare(req, res, next) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
