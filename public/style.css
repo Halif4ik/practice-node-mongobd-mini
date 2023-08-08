@@ -40,3 +40,16 @@ INPUT[name="submit"] {
     transition: 500ms;
     cursor: pointer;
 }
+.row{
+    margin-bottom: 10px!important;
+}
+form> button{
+    width: 128px;
+    height: 44px;
+    transition: 500ms;
+}
+form[action^="/all/edit/"]{
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 0 15vw;
+}

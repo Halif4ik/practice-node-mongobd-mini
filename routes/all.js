@@ -27,6 +27,16 @@ allUPageRoute.get('/:ID/edit', async (req, res) => {
     })
 });
 
+allUPageRoute.post('/edit/:ID', async (req, res) => {
+    const reqProdID = req.params.ID;
+    try {
+        await UserRepository.deleteOne({_id: reqProdID});
+        res.status(201).redirect('/all');
+    } catch (e) {
+        console.log(e)
+    }
+});
+
 /*post edit user res.status(202).send(changedUser).redirect('/all'); */
 allUPageRoute.post('/edit', async (req, res) => {
     const reqBody = req.body;
@@ -50,6 +60,7 @@ allUPageRoute.get('/:ID', async (req, res) => {
 function titleValidMiddleware() {
     return params().trim().isLength({min: 36, max: 36}).escape().withMessage("Wrong user ID");
 }
+
 function checkValidationInMiddleWare(req, res, next) {
     const errors = validationResult(req);
     if (errors.isEmpty()) {

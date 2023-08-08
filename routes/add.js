@@ -25,7 +25,7 @@ addPageRoute.post('/', async (req, res) => {
 
     try {
         await newUserRepoz.save()
-        res.status(200).redirect('/');
+        res.status(200).redirect('/all');
     }catch (e){
         console.log(e);
     }
