@@ -26,14 +26,14 @@ cartCont && cartCont.addEventListener('click', function (event) {
                     <td>${curUser.count}</td>
                     <td>${curUser.price}</td>
                     <td>
-                        <button class="btn btm-small js-remove" data-id="${curUser.id}">Decrease</button>
+                        <button class="btn btm-small js-remove" data-id="${curUser.developerId}">Decrease</button>
                     </td>
                 </tr>`
                 });
                 cartCont.querySelector('tbody').innerHTML = arrayPartsHtml.join('');
 
                 const cartPriceEl = cartCont.querySelector('.price-total');
-                cartPriceEl.textContent = card.price;
+                cartPriceEl.textContent = card.totalPrice;
                 changePrice(cartPriceEl);
             } else {
                 cartCont.innerHTML = '<p>Temporary empty card</p>'

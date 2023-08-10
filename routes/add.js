@@ -21,6 +21,7 @@ addPageRoute.post('/', async (req, res) => {
         img: reqBody.img,
         email: reqBody.email,
         lastName: reqBody.last_name,
+        userId: req.customer._id
     });
 
     try {
@@ -29,6 +30,5 @@ addPageRoute.post('/', async (req, res) => {
     }catch (e){
         console.log(e);
     }
-
 
 })

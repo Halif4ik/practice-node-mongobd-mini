@@ -1,33 +1,74 @@
 const {Router} = require('express');
 const cardRoute = Router({});
-const Card = require('../repositories/card');
-const path = require('path');
-const userRepository = require('../repositories/user-repositary');
 /*export const allProductsRoute = Router({})*/
+const userRepository = require('../repositories/user-repositary');
 
-/* res.status(200).send(newProd).redirect('/');*/
 cardRoute.post('/add', async (req, res) => {
     const reqBody = req.body;
-    const currentUser = await userRepository.getFromBdByID(reqBody.id);
-    const normalAdded = await Card.add(currentUser);
+    const currentDeveloper = await userRepository.findById(reqBody.id).lean();
+    await req.customer.addToCart(currentDeveloper);
 
-    normalAdded ? res.status(200).redirect('/card') : res.status(404).send(currentUser);
+    res.redirect('/card');
 
 })
 
 cardRoute.get('/', async (req, res) => {
-    /*console.log('path-',path.join(__dirname, 'public'));*/
-    let card = await Card.fetsh();
+    /*console.log('path-',path.join(__dirname, 'public'));
+     console.log('11customerCartItems-', customerCart.cart.items);*/
+    const customerCart = await req.customer.populate('cart.items.developerId');
+
+    let totalPrice = 0;
+    const developers = customerCart.cart.items.map((oneDevInCustomerCart) => {
+        totalPrice += oneDevInCustomerCart.count * oneDevInCustomerCart.developerId.price;
+        return {
+            count: oneDevInCustomerCart.count,
+            firstName: oneDevInCustomerCart.developerId.firstName,
+            price: oneDevInCustomerCart.developerId.price,
+            img: oneDevInCustomerCart.developerId.img,
+            email: oneDevInCustomerCart.developerId.email,
+            lastName: oneDevInCustomerCart.developerId.lastName,
+            developerId: oneDevInCustomerCart.developerId._id,
+        }
+    });
+
     res.render('card', {
         title: "Card",
         isCard: true,
-        card: card,
+        users: developers,
+        price: totalPrice,
     })
 });
-cardRoute.delete('/:ID', async (req, res) => {
-    const uriProdID = req.params.ID;
-    const changedCard = await Card.deleteProduct(uriProdID);
-    changedCard ? res.status(200).send(changedCard) : res.sendStatus(404)
-});
 
+cardRoute.delete('/:ID', async (req, res) => {
+    try {
+        const developerId = req.params.ID;
+        await req.customer.decreaseFromCart(developerId);
+
+        const customerCart = await req.customer.populate('cart.items.developerId');
+        console.log('delete-',customerCart);
+
+        let totalPrice = 0;
+        const developers = customerCart.cart.items.map((oneDevInCustomerCart) => {
+            totalPrice += oneDevInCustomerCart.count * oneDevInCustomerCart.developerId.price;
+            return {
+                count: oneDevInCustomerCart.count,
+                firstName: oneDevInCustomerCart.developerId.firstName,
+                price: oneDevInCustomerCart.developerId.price,
+                img: oneDevInCustomerCart.developerId.img,
+                email: oneDevInCustomerCart.developerId.email,
+                lastName: oneDevInCustomerCart.developerId.lastName,
+                developerId: oneDevInCustomerCart.developerId._id,
+            }
+        });
+
+        res.send( {
+            users: developers,
+            totalPrice: totalPrice,
+        })
+    } catch (e) {
+        res.sendStatus(404)
+    }
+
+
+});
 module.exports = cardRoute;
