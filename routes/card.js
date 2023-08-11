@@ -43,9 +43,8 @@ cardRoute.delete('/:ID', async (req, res) => {
     try {
         const developerId = req.params.ID;
         await req.customer.decreaseFromCart(developerId);
-
+        /*take .developerId from users ant pastete all filds in customer field*/
         const customerCart = await req.customer.populate('cart.items.developerId');
-        console.log('delete-',customerCart);
 
         let totalPrice = 0;
         const developers = customerCart.cart.items.map((oneDevInCustomerCart) => {
@@ -61,7 +60,7 @@ cardRoute.delete('/:ID', async (req, res) => {
             }
         });
 
-        res.send( {
+        res.send({
             users: developers,
             totalPrice: totalPrice,
         })

@@ -1,18 +1,23 @@
 .nav-wrapper {
     padding: 0 2rem;
 }
-strong{
+
+strong {
     font-weight: 700;
 }
+
 li > .active {
     background: #e95a65;
 }
+
 .card {
     width: 29vw;
 }
-.col.s12.m7>.card {
+
+.col.s12.m7 > .card {
     width: 100%;
 }
+
 .col.s12.m7 {
     margin-top: 5vw;
     position: relative;
@@ -24,31 +29,46 @@ li > .active {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    gap: 10px;
 }
+
+.card-container FORM {
+    align-self: center;
+}
+.card-container FORM Button {
+    width: 160px;
+}
+
 .card .card-content P.price, .price.big, .price-total {
     font-size: 22px;
 }
+
 .card-action.action {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 INPUT[name="submit"]:hover {
     background-color: #ffd8a6 !important;
 }
+
 INPUT[name="submit"] {
     transition: 500ms;
     cursor: pointer;
 }
-.row{
-    margin-bottom: 10px!important;
+
+.row {
+    margin-bottom: 10px !important;
 }
-form> button{
+
+form > button {
     width: 128px;
     height: 44px;
     transition: 500ms;
 }
-form[action^="/all/edit/"]{
+
+form[action^="/all/edit/"] {
     display: flex;
     flex-direction: row-reverse;
     margin: 0 15vw;

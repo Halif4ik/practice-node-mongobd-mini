@@ -22,8 +22,8 @@ customerSchema.methods.addToCart = function (currentDeveloper) {
     if (idx >= 0) clonedCusmomersItems[idx].count++;
     else clonedCusmomersItems.push({developerId: currentDeveloper._id, count: 1,});
 
-    const newCart = {items:clonedCusmomersItems}
-    this.cart= newCart;
+    const newCart = {items: clonedCusmomersItems}
+    this.cart = newCart;
     return this.save();
 }
 
@@ -31,15 +31,21 @@ customerSchema.methods.decreaseFromCart = function (developerId) {
     const clonedCusmomersItems = this.cart.items.concat();
     /*console.log('clonedCusmomersItems', clonedCusmomersItems);*/
     const idx = clonedCusmomersItems.findIndex(currentCustomer => {
-        return currentCustomer.developerId.toString() === developerId});
+        return currentCustomer.developerId.toString() === developerId
+    });
 
     /*with out check idf user send delete request with wrong id becouse from form fetch send string*/
     if (clonedCusmomersItems[idx].count > 1) clonedCusmomersItems[idx].count--;
-    else clonedCusmomersItems.splice(idx,1);
+    else clonedCusmomersItems.splice(idx, 1);
 
-    const newCart = {items:clonedCusmomersItems}
-    this.cart= newCart;
+    const newCart = {items: clonedCusmomersItems}
+    this.cart = newCart;
     return this.save();
 }
+customerSchema.methods.clearCart = function () {
+    this.cart.items = [];
+    return this.save();
+}
+
 
 module.exports = model('Customer', customerSchema);

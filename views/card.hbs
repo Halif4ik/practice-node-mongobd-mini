@@ -25,6 +25,9 @@
             </tbody>
         </table>
        <p>  <strong>Total price:</strong> <span class="price-total">{{price}}</span></p>
+        <form action="/orders" method="post">
+            <button class="btn btm-small js-remove blue" type="submit" data-id="{{users}}">Make purchase</button>
+        </form>
     {{else}}<p>Temporary empty card</p>
     {{/if}}
 </div>

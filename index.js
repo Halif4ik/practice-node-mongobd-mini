@@ -10,6 +10,7 @@ const mainPageRoute = require('./routes/main');
 const cardRoute = require('./routes/card');
 const allUPageRoute = require('./routes/all');
 const addPageRoute = require('./routes/add');
+const ordersRoute = require('./routes/orders');
 const path = require('path');
 const mongoose = require('mongoose');
 const Customer = require('./repositories/customer')
@@ -41,6 +42,7 @@ exprApp.use('/', mainPageRoute);
 exprApp.use('/all', allUPageRoute);
 exprApp.use('/add', addPageRoute);
 exprApp.use('/card', cardRoute);
+exprApp.use('/orders', ordersRoute);
 
 async function start() {
     try {
