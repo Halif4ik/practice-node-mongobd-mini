@@ -5,8 +5,25 @@ function changePrice(priceOnElem) {
     }).format(+priceOnElem.textContent);
 };
 
+function changeDateFormat(dateInEachElem) {
+    const temp= +dateInEachElem.textContent.trim();
+
+    dateInEachElem.textContent = Intl.DateTimeFormat('ru-RU', {
+        day: '2-digit',
+        month: 'long',
+        year:'2-digit',
+        hour:'2-digit',
+        minute:'2-digit',
+        second: '2-digit'
+    }).format(new Date(temp));
+};
+
 document.querySelectorAll('.card .card-content P.price, .price.big, .price-total').forEach(function (priceOnEachElem) {
     changePrice(priceOnEachElem);
+});
+
+document.querySelectorAll('.card .card-content .date').forEach(function (dateInEachElem) {
+    changeDateFormat(dateInEachElem);
 });
 
 const cartCont = document.querySelector('.card-container');
