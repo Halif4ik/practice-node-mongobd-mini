@@ -11,6 +11,7 @@ const cardRoute = require('./routes/card');
 const allUPageRoute = require('./routes/all');
 const addPageRoute = require('./routes/add');
 const ordersRoute = require('./routes/orders');
+const authPageRoute = require('./routes/auth');
 const path = require('path');
 const mongoose = require('mongoose');
 const Customer = require('./repositories/customer')
@@ -43,11 +44,13 @@ exprApp.use('/all', allUPageRoute);
 exprApp.use('/add', addPageRoute);
 exprApp.use('/card', cardRoute);
 exprApp.use('/orders', ordersRoute);
+exprApp.use('/auth', authPageRoute);
 
 async function start() {
     try {
         const link = 'mongodb+srv://chikibriki2:KQoDNhuWCigEleSS@cluster1.vhd57va.mongodb.net/Exchange_of_developers';
         await mongoose.connect(link, {useNewUrlParser: true});
+
         const candidate = await Customer.findOne();
         if (!candidate) {
             const customer = new Customer({
@@ -64,7 +67,6 @@ async function start() {
         console.log(e)
     }
 }
-
 start();
 
 /*start express App*/
