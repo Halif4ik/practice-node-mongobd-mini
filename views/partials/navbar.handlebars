@@ -14,28 +14,33 @@
                 <li><a href="/all">All users</a></li>
             {{/if}}
 
-            {{#if isAdd}}
-                <li><a class="active" href="/add">Create new user</a></li>
-            {{else}}
-                <li><a href="/add">Create new user</a></li>
+            <!--hide if user un log-->
+            {{#if isAuth}}
+                {{#if isAdd}}
+                    <li><a class="active" href="/add">Create new user</a></li>
+                {{else}}
+                    <li><a href="/add">Create new user</a></li>
+                {{/if}}
+
+                {{#if isCard}}
+                    <li><a class="active" href="/card">Cart</a></li>
+                {{else}}
+                    <li><a href="/card">Cart</a></li>
+                {{/if}}
+
+                {{#if isOrders}}
+                    <li><a class="active" href="/orders">Orders</a></li>
+                {{else}}
+                    <li><a href="/orders">Orders</a></li>
+                {{/if}}
             {{/if}}
 
-            {{#if isCard}}
-                <li><a class="active" href="/card">Cart</a></li>
-            {{else}}
-                <li><a href="/card">Cart</a></li>
-            {{/if}}
-
-            {{#if isOrders}}
-                <li><a class="active" href="/orders">Orders</a></li>
-            {{else}}
-                <li><a href="/orders">Orders</a></li>
-            {{/if}}
+            <li><a href="/auth/logout">Log out</a></li>
 
             {{#if isLogin}}
-                <li><a class="active" href="/auth#login">Auth</a></li>
+                <li><a class="active" href="/auth#login">Sing in</a></li>
             {{else}}
-                <li><a href="/auth#login">Auth</a></li>
+                <li><a href="/auth#login">Sing in</a></li>
             {{/if}}
         </ul>
     </div>

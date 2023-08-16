@@ -13,10 +13,11 @@ const addPageRoute = require('./routes/add');
 const ordersRoute = require('./routes/orders');
 const authPageRoute = require('./routes/auth');
 const path = require('path');
+const session = require('express-session');
 const mongoose = require('mongoose');
 const Customer = require('./repositories/customer')
 const {Schema} = require("mongoose");
-
+const varMiddlewareFunction = require('./midleware/authVar');
 const hbs = expHandleB.create({
     defaultLayout: 'index',
     extname: 'handlebars',
@@ -38,6 +39,14 @@ exprApp.use(async (req, res, next)=>{
 })
 /*exprApp.use(express.static('public'))*/
 exprApp.use(express.static(path.join(__dirname, 'public')))
+exprApp.use(express.urlencoded({extended:true}))
+/*options*/
+exprApp.use(session({
+    secret:'some secret',
+    resave: false,
+    saveUninitialized: false
+}))
+exprApp.use(varMiddlewareFunction);
 exprApp.use(bodyParser({}));
 exprApp.use('/', mainPageRoute);
 exprApp.use('/all', allUPageRoute);

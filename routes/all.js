@@ -8,6 +8,7 @@ const UserRepository = require('../repositories/user-repositary');
 
 allUPageRoute.get('/', async (req, res) => {
     const arrAllUsers = await UserRepository.find({}).populate('userId','email firstName').select('email firstName price img').lean();
+    console.log('req.session-',req.session);
 
     res.render('all', {
         title: "About",
