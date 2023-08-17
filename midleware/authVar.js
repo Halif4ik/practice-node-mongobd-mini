@@ -1,5 +1,5 @@
 module.exports = function (req, res, next) {
-    /*handlebars take from locals*/
+    /*handlebars can take from locals*/
     res.locals.isAuth = req.session.isAuthenticated;
     next();
 }

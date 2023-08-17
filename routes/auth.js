@@ -1,5 +1,6 @@
 const {Router} = require('express');
 const authPageRoute = Router();
+const Customer = require('../repositories/customer')
 module.exports = authPageRoute;
 
 
@@ -17,11 +18,22 @@ authPageRoute.post('/register', async (req, res) => {
 })
 
 authPageRoute.post('/login', async (req, res) => {
+    req.session.customer = await Customer.findById('64d4a9f4456b3a9882c74758');
     req.session.isAuthenticated = true;
-    res.redirect('/')
+
+    req.session.save(err => {
+        if (err) {
+            console.log('Error with save user-',err);
+            throw err;
+        }
+        res.redirect('/')
+    });
+
 })
-/*2-Y*/
 authPageRoute.get('/logout', async (req, res) => {
-    req.session.isAuthenticated = true;
-    res.redirect('/')
+    /*req.session.isAuthenticated = false;*/
+    req.session.destroy(() => {
+        res.redirect('/auth#login')
+    });
+
 })

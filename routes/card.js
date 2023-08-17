@@ -2,8 +2,9 @@ const {Router} = require('express');
 const cardRoute = Router({});
 /*export const allProductsRoute = Router({})*/
 const userRepository = require('../repositories/user-repositary');
+const isAuthUser= require('../midleware/isAuth');
 
-cardRoute.post('/add', async (req, res) => {
+cardRoute.post('/add',isAuthUser, async (req, res) => {
     const reqBody = req.body;
     const currentDeveloper = await userRepository.findById(reqBody.id).lean();
     await req.customer.addToCart(currentDeveloper);
@@ -12,7 +13,7 @@ cardRoute.post('/add', async (req, res) => {
 
 })
 
-cardRoute.get('/', async (req, res) => {
+cardRoute.get('/', isAuthUser,async (req, res) => {
     /*console.log('path-',path.join(__dirname, 'public'));
      console.log('11customerCartItems-', customerCart.cart.items);*/
     const customerCart = await req.customer.populate('cart.items.developerId');
@@ -39,7 +40,7 @@ cardRoute.get('/', async (req, res) => {
     })
 });
 
-cardRoute.delete('/:ID', async (req, res) => {
+cardRoute.delete('/:ID', isAuthUser,async (req, res) => {
     try {
         const developerId = req.params.ID;
         await req.customer.decreaseFromCart(developerId);

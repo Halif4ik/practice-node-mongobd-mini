@@ -2,12 +2,13 @@
 /*"type": "module" import/require */
 const {Router} = require('express');
 const Order = require('../repositories/order')
+const isAuthUser= require('../midleware/isAuth');
 
 const ordersRoute = Router();
 module.exports = ordersRoute;
 /*export const ordersRoute = Router({});*/
 
-ordersRoute.get('/', async (req, res) => {
+ordersRoute.get('/', isAuthUser,async (req, res) => {
     try {
         const customerId = req.customer._id;
         const customerOrder = await Order.find({'customer.customerId': customerId}).populate('customer.customerId').lean();
@@ -36,7 +37,7 @@ ordersRoute.get('/', async (req, res) => {
     }
 });
 
-ordersRoute.post('/', async (req, res) => {
+ordersRoute.post('/', isAuthUser,async (req, res) => {
     try {
         const customerCart = await req.customer.populate('cart.items.developerId');
 
