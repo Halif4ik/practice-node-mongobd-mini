@@ -1,6 +1,5 @@
 module.exports = function (req, res, next) {
     if (!req.session.isAuthenticated) {
-        console.log('Nea-',req.session.isAuthenticated);
         res.redirect('/auth#login');
     } else next();
 }

@@ -15,8 +15,10 @@
                     <a href="all/{{this._id}}" target="_blank">More</a>
                     {{#if @root.isAuth}}
                         <a href="all/{{this._id}}/edit?allow=true">Change</a>
+
                         <form action="/card/add" method="post">
                             <input type="hidden" name="id" value="{{this._id}}">
+                            <input type="hidden" name="_csrf" value="{{@root.tokenSentToFront}}">
                             <input name="submit" type="submit" role="button" value="Add to card"
                                    aria-label="Submit" data-input-type="submit"
                                    style="width: 10vw; height: 44px; border-radius: 4px; font-size: 16px; font-weight: bold;

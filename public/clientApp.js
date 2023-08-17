@@ -64,4 +64,5 @@ cartCont && cartCont.addEventListener('click', function (event) {
 });
 
 var instance = M.Tabs.init(document.querySelector('.tabs'),{duration:800});
-console.log('instance-',instance);
+/*
+console.log('instance-',instance);*/

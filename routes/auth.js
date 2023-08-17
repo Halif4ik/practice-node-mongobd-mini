@@ -1,8 +1,9 @@
 const {Router} = require('express');
+const bcrypt = require('bcryptjs');
 const authPageRoute = Router();
 const Customer = require('../repositories/customer')
 module.exports = authPageRoute;
-
+const Tokens = require('csrf');
 
 authPageRoute.get('/', (req, res) => {
     res.render('auth/login', {
@@ -10,26 +11,63 @@ authPageRoute.get('/', (req, res) => {
         isLogin: true,
     })
 })
-
+/*register new usver*/
 authPageRoute.post('/register', async (req, res) => {
+    const {first_name, last_name, email, password, img} = req.body;
 
-    req.session.isAuthenticated = true;
-    res.redirect('/')
+    if (await Customer.findOne({email})) {
+        res.redirect('/auth#login');
+        return;
+    }
+    /*create secret kay and token for hidden filds in forms*/
+    const tokens= new Tokens();
+    const secretForCustomer = await tokens.secret();
+    req.session.secretForCustomer = secretForCustomer;
+    console.log('register-', secretForCustomer);
+
+    const newCustomer = new Customer({
+        firstName: first_name,
+        lastName: last_name,
+        email,
+        password: await bcrypt.hash(password, 10),
+        img,
+        cart: {items: []},
+        secret: secretForCustomer
+    });
+    try {
+        await newCustomer.save()
+        res.redirect('/all');
+    } catch (e) {
+        console.log(e);
+    }
 })
 
 authPageRoute.post('/login', async (req, res) => {
-    req.session.customer = await Customer.findById('64d4a9f4456b3a9882c74758');
-    req.session.isAuthenticated = true;
+    const {email, password} = req.body;
+    const registeredCustomer = await Customer.findOne({email});
+    const isHashedPasswordEqual = await bcrypt.compare(password, registeredCustomer.password);
 
-    req.session.save(err => {
-        if (err) {
-            console.log('Error with save user-',err);
-            throw err;
-        }
-        res.redirect('/')
-    });
+
+    if (registeredCustomer && isHashedPasswordEqual ) {
+        req.session.customer = registeredCustomer;
+        req.session.isAuthenticated = true;
+
+        req.session.secretForCustomer = registeredCustomer.secret;
+        console.log('Login-', registeredCustomer.secret);
+
+        req.session.save(err => {
+            if (err) {
+                console.log('Error with save user-', err);
+                throw err;
+            }
+            res.redirect('/')
+        });
+
+
+    } else res.redirect('/auth#register');
 
 })
+
 authPageRoute.get('/logout', async (req, res) => {
     /*req.session.isAuthenticated = false;*/
     req.session.destroy(() => {

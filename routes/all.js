@@ -4,11 +4,13 @@ module.exports = allUPageRoute;
 /*import {body, validationResult} from 'express-validator'*/
 const {params, validationResult} = require('express-validator');
 const UserRepository = require('../repositories/user-repositary');
-const isAuthUser= require('../midleware/isAuth');
+const isAuthUser = require('../midleware/isAuth');
+
 
 allUPageRoute.get('/', async (req, res) => {
-    const arrAllUsers = await UserRepository.find({}).populate('userId','email firstName').select('email firstName price img').lean();
-    console.log('req.session-',req.session);
+    const arrAllUsers = await UserRepository.find({}).populate('userId', 'email firstName').select('email firstName price img').lean();
+    /*console.log('req.session-', req.session);*/
+
 
     res.render('all', {
         title: "About",
@@ -29,7 +31,7 @@ allUPageRoute.get('/:ID/edit', isAuthUser, async (req, res) => {
     })
 });
 /*delete developer*/
-allUPageRoute.post('/edit/:ID',isAuthUser, async (req, res) => {
+allUPageRoute.post('/edit/:ID', isAuthUser, async (req, res) => {
     const reqProdID = req.params.ID;
     try {
         await UserRepository.deleteOne({_id: reqProdID});
@@ -40,7 +42,7 @@ allUPageRoute.post('/edit/:ID',isAuthUser, async (req, res) => {
 });
 
 /*post edit user res.status(202).send(changedUser).redirect('/all'); */
-allUPageRoute.post('/edit',isAuthUser ,async (req, res) => {
+allUPageRoute.post('/edit', isAuthUser, async (req, res) => {
     const reqBody = req.body;
     const id = reqBody.id;
     delete reqBody.id

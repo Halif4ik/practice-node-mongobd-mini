@@ -3,12 +3,13 @@ const cardRoute = Router({});
 /*export const allProductsRoute = Router({})*/
 const userRepository = require('../repositories/user-repositary');
 const isAuthUser= require('../midleware/isAuth');
+const isCorrectToken= require('../midleware/iscorectToken');
 
-cardRoute.post('/add',isAuthUser, async (req, res) => {
+cardRoute.post('/add',isAuthUser,isCorrectToken, async (req, res) => {
     const reqBody = req.body;
     const currentDeveloper = await userRepository.findById(reqBody.id).lean();
-    await req.customer.addToCart(currentDeveloper);
 
+    await req.customer.addToCart(currentDeveloper);
     res.redirect('/card');
 
 })

@@ -19,6 +19,9 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const Customer = require('./repositories/customer')
 const {Schema} = require("mongoose");
 const varMiddlewareFunction = require('./midleware/authVar');
+const customerAddMiddleware = require('./midleware/customerMidleware');
+
+
 const hbs = expHandleB.create({
     defaultLayout: 'index',
     extname: 'handlebars',
@@ -46,6 +49,8 @@ exprApp.use(session({
     },
 }))
 exprApp.use(varMiddlewareFunction);
+exprApp.use(customerAddMiddleware);
+
 exprApp.use(bodyParser({}));
 exprApp.use('/', mainPageRoute);
 exprApp.use('/all', allUPageRoute);
