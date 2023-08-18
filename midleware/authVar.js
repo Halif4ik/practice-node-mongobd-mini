@@ -7,9 +7,7 @@ module.exports = async function (req, res, next) {
     if (res.locals.isAuth) {
         const tokens = new Tokens();
         const secret = req.session.secretForCustomer;
-        console.log('secret-', secret);
         const tokenSentToFront = await tokens.create(secret);
-        console.log('tokenSentToFront-', tokenSentToFront);
 
         res.locals.tokenSentToFront = tokenSentToFront;
     }

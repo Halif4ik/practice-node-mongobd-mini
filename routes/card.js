@@ -41,7 +41,7 @@ cardRoute.get('/', isAuthUser,async (req, res) => {
     })
 });
 
-cardRoute.delete('/:ID', isAuthUser,async (req, res) => {
+cardRoute.delete('/:ID', isAuthUser,isCorrectToken, async (req, res) => {
     try {
         const developerId = req.params.ID;
         await req.customer.decreaseFromCart(developerId);

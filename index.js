@@ -16,10 +16,9 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const Customer = require('./repositories/customer')
-const {Schema} = require("mongoose");
 const varMiddlewareFunction = require('./midleware/authVar');
 const customerAddMiddleware = require('./midleware/customerMidleware');
+var flash = require('connect-flash');
 
 
 const hbs = expHandleB.create({
@@ -35,7 +34,6 @@ exprApp.engine('hbs', hbs.engine);
 exprApp.set('view engine', 'hbs');
 exprApp.set('views', 'views');
 
-
 exprApp.use(express.static(path.join(__dirname, 'public')))
 exprApp.use(express.urlencoded({extended: true}))
 /*options*/
@@ -50,6 +48,7 @@ exprApp.use(session({
 }))
 exprApp.use(varMiddlewareFunction);
 exprApp.use(customerAddMiddleware);
+exprApp.use(flash());
 
 exprApp.use(bodyParser({}));
 exprApp.use('/', mainPageRoute);

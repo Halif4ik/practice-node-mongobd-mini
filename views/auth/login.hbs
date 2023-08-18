@@ -8,6 +8,12 @@
             <li class="tab col s6"><a  href="#register">Register</a></li>
         </ul>
     </div>
+    {{#if errorReg}}
+        <p class="alert">{{errorReg}}</p>
+    {{else if errorLog}}
+        <p class="alert">{{errorLog}}</p>
+    {{/if}}
+
     <div id="login" class="col s6 offset-s3">
         <h3>Sing in exchange</h3>
         <form action="/auth/login" method="POST">

@@ -1,16 +1,14 @@
 const {Router} = require('express');
 const allUPageRoute = Router();
 module.exports = allUPageRoute;
-/*import {body, validationResult} from 'express-validator'*/
-const {params, validationResult} = require('express-validator');
 const UserRepository = require('../repositories/user-repositary');
 const isAuthUser = require('../midleware/isAuth');
 
 
 allUPageRoute.get('/', async (req, res) => {
     const arrAllUsers = await UserRepository.find({}).populate('userId', 'email firstName').select('email firstName price img').lean();
-    /*console.log('req.session-', req.session);*/
-
+   /* console.log('req.sessionis-', req.session);
+    console.log('locals-', res.locals);*/
 
     res.render('all', {
         title: "About",

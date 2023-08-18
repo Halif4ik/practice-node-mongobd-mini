@@ -18,7 +18,7 @@
                     <td>{{count}}</td>
                     <td>{{price}}</td>
                     <td>
-                        <button class="btn btm-small js-remove" data-id="{{developerId}}">Decrease</button>
+                        <button class="btn btm-small js-remove" data-id="{{developerId}}" data-csrf="{{@root.tokenSentToFront}}">Decrease</button>
                     </td>
                 </tr>
             {{/each}}
@@ -26,6 +26,7 @@
         </table>
        <p>  <strong>Total price:</strong> <span class="price-total">{{price}}</span></p>
         <form action="/orders" method="post">
+            <input type="hidden" name="_csrf" value="{{@root.tokenSentToFront}}">
             <button class="btn btm-small js-remove blue" type="submit" data-id="{{users}}">Make purchase</button>
         </form>
     {{else}}<p>Temporary empty card</p>

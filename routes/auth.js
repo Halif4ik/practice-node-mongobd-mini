@@ -9,21 +9,24 @@ authPageRoute.get('/', (req, res) => {
     res.render('auth/login', {
         title: "Authentication",
         isLogin: true,
+        errorReg: req.flash('wrong registered'),
+        errorLog: req.flash('wrong login'),
     })
 })
+
 /*register new usver*/
 authPageRoute.post('/register', async (req, res) => {
     const {first_name, last_name, email, password, img} = req.body;
 
     if (await Customer.findOne({email})) {
+        req.flash('wrong registered', 'User with this email was register')
         res.redirect('/auth#login');
         return;
     }
     /*create secret kay and token for hidden filds in forms*/
-    const tokens= new Tokens();
+    const tokens = new Tokens();
     const secretForCustomer = await tokens.secret();
     req.session.secretForCustomer = secretForCustomer;
-    console.log('register-', secretForCustomer);
 
     const newCustomer = new Customer({
         firstName: first_name,
@@ -45,15 +48,13 @@ authPageRoute.post('/register', async (req, res) => {
 authPageRoute.post('/login', async (req, res) => {
     const {email, password} = req.body;
     const registeredCustomer = await Customer.findOne({email});
-    const isHashedPasswordEqual = await bcrypt.compare(password, registeredCustomer.password);
 
 
-    if (registeredCustomer && isHashedPasswordEqual ) {
+    if (registeredCustomer && await bcrypt.compare(password, registeredCustomer.password)) {
         req.session.customer = registeredCustomer;
         req.session.isAuthenticated = true;
 
         req.session.secretForCustomer = registeredCustomer.secret;
-        console.log('Login-', registeredCustomer.secret);
 
         req.session.save(err => {
             if (err) {
@@ -62,10 +63,10 @@ authPageRoute.post('/login', async (req, res) => {
             }
             res.redirect('/')
         });
-
-
-    } else res.redirect('/auth#register');
-
+    } else {
+        registeredCustomer ? req.flash('wrong login', 'Wrong password') : req.flash('wrong login', 'Wrong email')
+        res.redirect('/auth#login');
+    }
 })
 
 authPageRoute.get('/logout', async (req, res) => {

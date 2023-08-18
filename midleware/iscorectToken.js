@@ -1,19 +1,14 @@
 const Tokens = require('csrf');
-const Customer = require('../repositories/customer')
 
 module.exports = async function (req, res, next) {
     const _csrfToken = req.body._csrf;
-    const secretForCustomer = req.session.secretForCustomer;
-    console.log("!!!currentDeveloper-", secretForCustomer);
-    const secret = secretForCustomer;
+    const XSRF = req.headers['x-xcsrf'];
+    const token = _csrfToken ? _csrfToken : XSRF;
 
-    console.log("!!!_csrfToken-", _csrfToken);
-    console.log("!!!secret-", secret);
     const tokens = new Tokens();
-    const isCorect = tokens.verify(secret, _csrfToken);
-    console.log("!!!true/false-", isCorect);
+    const isCorect = tokens.verify(req.session.secretForCustomer, token);
 
     if (!isCorect) {
-        res.redirect('/auth#login');
+        res.status(404).redirect('/auth#login');
     } else next();
 }
