@@ -9,6 +9,7 @@ exports.emailValidInBodyMiddleware = function () {
         }
     });
 }
+
 exports.passwordValidInBodyMiddleware = function () {
     return body('password', "Password should has characters or numbers should be longer 5").trim().isLength({
         min: 6,
