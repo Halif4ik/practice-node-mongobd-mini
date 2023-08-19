@@ -34,9 +34,6 @@
                 {{/if}}
 
                 <li><a href="/auth/logout">Log out</a></li>
-            {{/if}}
-
-            {{#if isAuth}}
             {{else}}
                 {{#if isLogin}}
                     <li><a class="active" href="/auth#login">Sing in</a></li>
@@ -45,6 +42,13 @@
                 {{/if}}
             {{/if}}
 
+            <!--    {{#ifCond isAuth '!=' true}}
+                {{#if isLogin}}
+                    <li><a class="active" href="/auth#login">Sing in</a></li>
+                {{else}}
+                    <li><a href="/auth#login">Sing in</a></li>
+                {{/if}}
+            {{/ifCond}}-->
 
         </ul>
     </div>

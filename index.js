@@ -25,6 +25,7 @@ const constants = require('./constants');
 const hbs = expHandleB.create({
     defaultLayout: 'index',
     extname: 'handlebars',
+    helpers:require('./hbs-helpers')
 });
 
 const store = new MongoDBStore({
