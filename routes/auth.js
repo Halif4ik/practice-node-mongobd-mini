@@ -4,6 +4,16 @@ const authPageRoute = Router();
 const Customer = require('../repositories/customer')
 module.exports = authPageRoute;
 const Tokens = require('csrf');
+const constants = require('../constants');
+const nodemailer = require('nodemailer');
+const sgTransport = require('nodemailer-sendgrid-transport');
+let count = 0;
+const mailer = nodemailer.createTransport(sgTransport({
+    auth: {
+        api_key: constants.SEND_GRID_API_KEY,
+    }
+}));
+
 
 authPageRoute.get('/', (req, res) => {
     res.render('auth/login', {
@@ -37,8 +47,26 @@ authPageRoute.post('/register', async (req, res) => {
         cart: {items: []},
         secret: secretForCustomer
     });
+
+
     try {
-        await newCustomer.save()
+        await newCustomer.save();
+
+        await mailer.sendMail({
+            to: [email],
+            from: constants.HOST_EMAIL,
+            subject: `You ${first_name + " " + last_name} are registered on exchange of developers`,
+            text: `Lorem ipsum dolor sit amet.`,
+            html: `<h1>Thanks very match!</h1>
+                    <p> You created account with this email- ${email}</p>
+                    <hr/>
+                    <a href="${constants.BASE_URL}">Our exchange of developers</a>
+`
+        }, function (err, res) {
+            if (err) console.log('errsendMail-', err)
+            console.log(`sendMail${count++}-`, res);
+        });
+
         res.redirect('/all');
     } catch (e) {
         console.log(e);

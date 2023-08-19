@@ -33,15 +33,20 @@
                 {{else}}
                     <li><a href="/orders">Orders</a></li>
                 {{/if}}
+
+                <li><a href="/auth/logout">Log out</a></li>
             {{/if}}
 
-            <li><a href="/auth/logout">Log out</a></li>
-
-            {{#if isLogin}}
-                <li><a class="active" href="/auth#login">Sing in</a></li>
+            {{#if isAuth}}
             {{else}}
-                <li><a href="/auth#login">Sing in</a></li>
+                {{#if isLogin}}
+                    <li><a class="active" href="/auth#login">Sing in</a></li>
+                {{else}}
+                    <li><a href="/auth#login">Sing in</a></li>
+                {{/if}}
             {{/if}}
+
+
         </ul>
     </div>
 </nav>

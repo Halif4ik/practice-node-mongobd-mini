@@ -19,15 +19,16 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const varMiddlewareFunction = require('./midleware/authVar');
 const customerAddMiddleware = require('./midleware/customerMidleware');
 var flash = require('connect-flash');
+const constants = require('./constants');
 
 
 const hbs = expHandleB.create({
     defaultLayout: 'index',
     extname: 'handlebars',
 });
-const mongoURL = 'mongodb+srv://chikibriki2:KQoDNhuWCigEleSS@cluster1.vhd57va.mongodb.net/Exchange_of_developers';
+
 const store = new MongoDBStore({
-    uri: mongoURL,
+    uri: constants.mongoURL,
     collection: 'mySessions'
 });
 exprApp.engine('hbs', hbs.engine);
@@ -60,7 +61,7 @@ exprApp.use('/auth', authPageRoute);
 
 async function start() {
     try {
-        await mongoose.connect(mongoURL, {useNewUrlParser: true});
+        await mongoose.connect(constants.mongoURL, {useNewUrlParser: true});
         exprApp.listen(port, () => {
             console.log(`Example MYapp listening on port ${port}`)
         })

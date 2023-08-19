@@ -19,15 +19,15 @@
         <form action="/auth/login" method="POST">
             <div class="row">
                 <div class="input-field col s12">
-                    <input name="email" type="email" class="validate" required>
-                    <label for="email">Email</label>
+                    <input id="email-log" name="email" type="email" class="validate" required>
+                    <label for="email-log">Email</label>
                     <span class="helper-text" data-error="Enter email"></span>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input  name="password" type="password" class="validate" required>
-                    <label for="email">Password</label>
+                    <input  id="pass-log" name="password" type="password" class="validate" required>
+                    <label for="pass-log">Password</label>
                     <span class="helper-text" data-error="Enter password"></span>
                 </div>
             </div>
@@ -53,15 +53,15 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input  name="email" type="email" class="validate" required>
-                    <label for="email">Email</label>
+                    <input  id="email-reg" name="email" type="email" class="validate" required>
+                    <label for="email-reg">Email</label>
                     <span class="helper-text" data-error="Enter email" ></span>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="password" name="password" type="password" class="validate" required>
-                    <label for="password">Password</label>
+                    <input id="password-reg" name="password" type="password" class="validate" required>
+                    <label for="password-reg">Password</label>
                     <span class="helper-text" data-error="Enter password" ></span>
                 </div>
             </div>
@@ -82,9 +82,10 @@
                 </div>
             </div>
 
-            <input class="btn btn-primary" name="submit" required="true" type="submit" value="Register"
+            <input id="register-sub" class="btn btn-primary" name="submit" required="true" type="submit" value="Register"
                    aria-label="Submit" data-input-type="submit"
                    draggable="false">
+            <label for="register-sub">Confirmation email will delivery in spam folder your email</label>
 
         </form>
     </div>
