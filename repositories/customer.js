@@ -2,7 +2,9 @@ const {Schema, model} = require('mongoose');
 const customerSchema = new Schema({
     email: {type: String, require: true},
     firstName: {type: String, require: true},
+    password: {type: String, require: true},
     img: String,
+    secret: String,
     lastName: String,
     cart: {
         items: [

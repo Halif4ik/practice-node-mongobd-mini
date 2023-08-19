@@ -1,13 +1,14 @@
 const {Router} = require('express');
 const allUPageRoute = Router();
 module.exports = allUPageRoute;
-/*import {body, validationResult} from 'express-validator'*/
-const {params, validationResult} = require('express-validator');
 const UserRepository = require('../repositories/user-repositary');
+const isAuthUser = require('../midleware/isAuth');
 
 
 allUPageRoute.get('/', async (req, res) => {
-    const arrAllUsers = await UserRepository.find({}).populate('userId','email firstName').select('email firstName price img').lean();
+    const arrAllUsers = await UserRepository.find({}).populate('userId', 'email firstName').select('email firstName price img').lean();
+   /* console.log('req.sessionis-', req.session);
+    console.log('locals-', res.locals);*/
 
     res.render('all', {
         title: "About",
@@ -16,7 +17,7 @@ allUPageRoute.get('/', async (req, res) => {
     })
 });
 
-allUPageRoute.get('/:ID/edit', async (req, res) => {
+allUPageRoute.get('/:ID/edit', isAuthUser, async (req, res) => {
     const allow = req.query.allow;
     const reqProdID = req.params.ID;
     if (!allow) return res.redirect('/');
@@ -27,8 +28,8 @@ allUPageRoute.get('/:ID/edit', async (req, res) => {
         user: foundUser,
     })
 });
-
-allUPageRoute.post('/edit/:ID', async (req, res) => {
+/*delete developer*/
+allUPageRoute.post('/edit/:ID', isAuthUser, async (req, res) => {
     const reqProdID = req.params.ID;
     try {
         await UserRepository.deleteOne({_id: reqProdID});
@@ -39,7 +40,7 @@ allUPageRoute.post('/edit/:ID', async (req, res) => {
 });
 
 /*post edit user res.status(202).send(changedUser).redirect('/all'); */
-allUPageRoute.post('/edit', async (req, res) => {
+allUPageRoute.post('/edit', isAuthUser, async (req, res) => {
     const reqBody = req.body;
     const id = reqBody.id;
     delete reqBody.id
@@ -58,15 +59,3 @@ allUPageRoute.get('/:ID', async (req, res) => {
     }) : res.sendStatus(404)
 });
 
-function titleValidMiddleware() {
-    return params().trim().isLength({min: 36, max: 36}).escape().withMessage("Wrong user ID");
-}
-
-function checkValidationInMiddleWare(req, res, next) {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        next();
-    } else {
-        res.status(400).send({errors: errors.array()});
-    }
-}

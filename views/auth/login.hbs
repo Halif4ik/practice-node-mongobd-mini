@@ -1,0 +1,93 @@
+<div class="auth" style="padding-top: 1rem">
+
+
+<div class="row">
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab col s6"><a class="active" href="#login">Sing in</a></li>
+            <li class="tab col s6"><a  href="#register">Register</a></li>
+        </ul>
+    </div>
+    {{#if errorReg}}
+        <p class="alert">{{errorReg}}</p>
+    {{else if errorLog}}
+        <p class="alert">{{errorLog}}</p>
+    {{/if}}
+
+    <div id="login" class="col s6 offset-s3">
+        <h3>Sing in exchange</h3>
+        <form action="/auth/login" method="POST">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="email-log" name="email" type="email" class="validate" required>
+                    <label for="email-log">Email</label>
+                    <span class="helper-text" data-error="Enter email"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input  id="pass-log" name="password" type="password" class="validate" required>
+                    <label for="pass-log">Password</label>
+                    <span class="helper-text" data-error="Enter password"></span>
+                </div>
+            </div>
+            <input class="btn btn-primary" name="submit" required="true" type="submit" value="Log in"
+                   aria-label="Submit" data-input-type="submit"
+                   draggable="false">
+
+        </form></div>
+    <div id="register" class="col s6 offset-s3">
+        <h3>Create account</h3>
+        <form action="/auth/register" method="POST">
+            <div class="row">
+                <div class="input-field col s6">
+                    <!-- <i class="material-icons prefix">account_circle</i>-->
+                    <input  name="first_name" id="first_name" type="text" class="validate" required>
+                    <label for="first_name">First Name</label>
+                    <span class="helper-text" data-error="Min tree symbols" ></span>
+                </div>
+                <div class="input-field col s6">
+                    <input id="last_name" name="last_name" type="text" class="validate">
+                    <label for="last_name">Last Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input  id="email-reg" name="email" type="email" class="validate" required>
+                    <label for="email-reg">Email</label>
+                    <span class="helper-text" data-error="Enter email" ></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="password-reg" name="password" type="password" class="validate" required>
+                    <label for="password-reg">Password</label>
+                    <span class="helper-text" data-error="Enter password" ></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="confirm" name="confirm" type="password" class="validate" required>
+                    <label for="confirm">Confirm password</label>
+                    <span class="helper-text" data-error="Enter password twice" ></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    This is a field for URL:
+                    <div class="input-field inline">
+                        <input id="img_inline" name="img" type="text" class="validate">
+                        <label for="img_inline">Image</label>
+                    </div>
+                </div>
+            </div>
+
+            <input id="register-sub" class="btn btn-primary" name="submit" required="true" type="submit" value="Register"
+                   aria-label="Submit" data-input-type="submit"
+                   draggable="false">
+            <label for="register-sub">Confirmation email will delivery in spam folder your email</label>
+
+        </form>
+    </div>
+</div>
+</div>

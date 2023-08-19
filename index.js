@@ -11,52 +11,57 @@ const cardRoute = require('./routes/card');
 const allUPageRoute = require('./routes/all');
 const addPageRoute = require('./routes/add');
 const ordersRoute = require('./routes/orders');
+const authPageRoute = require('./routes/auth');
 const path = require('path');
 const mongoose = require('mongoose');
-const Customer = require('./repositories/customer')
-const {Schema} = require("mongoose");
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
+const varMiddlewareFunction = require('./midleware/authVar');
+const customerAddMiddleware = require('./midleware/customerMidleware');
+var flash = require('connect-flash');
+const constants = require('./constants');
+
 
 const hbs = expHandleB.create({
     defaultLayout: 'index',
     extname: 'handlebars',
 });
 
+const store = new MongoDBStore({
+    uri: constants.mongoURL,
+    collection: 'mySessions'
+});
 exprApp.engine('hbs', hbs.engine);
 exprApp.set('view engine', 'hbs');
 exprApp.set('views', 'views');
 
-exprApp.use(async (req, res, next)=>{
-    try {
-        const customer = await Customer.findById('64d4a9f4456b3a9882c74758');
-        req.customer = customer;
-        next();
-    }catch (e) {
-        console.log(e);
-    }
-
-})
-/*exprApp.use(express.static('public'))*/
 exprApp.use(express.static(path.join(__dirname, 'public')))
+exprApp.use(express.urlencoded({extended: true}))
+/*options*/
+exprApp.use(session({
+    secret: 'some secret',
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    },
+}))
+exprApp.use(varMiddlewareFunction);
+exprApp.use(customerAddMiddleware);
+exprApp.use(flash());
+
 exprApp.use(bodyParser({}));
 exprApp.use('/', mainPageRoute);
 exprApp.use('/all', allUPageRoute);
 exprApp.use('/add', addPageRoute);
 exprApp.use('/card', cardRoute);
 exprApp.use('/orders', ordersRoute);
+exprApp.use('/auth', authPageRoute);
 
 async function start() {
     try {
-        const link = 'mongodb+srv://chikibriki2:KQoDNhuWCigEleSS@cluster1.vhd57va.mongodb.net/Exchange_of_developers';
-        await mongoose.connect(link, {useNewUrlParser: true});
-        const candidate = await Customer.findOne();
-        if (!candidate) {
-            const customer = new Customer({
-                email: 'test@gmail.test',
-                firstName: "Best Guy",
-                cart: {items: []}
-            });
-            await customer.save();
-        }
+        await mongoose.connect(constants.mongoURL, {useNewUrlParser: true});
         exprApp.listen(port, () => {
             console.log(`Example MYapp listening on port ${port}`)
         })

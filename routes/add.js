@@ -4,15 +4,17 @@ module.exports = addPageRoute;
 
 /*import {productsRepository} from "../repositories/user-repositary";*/
 const userRepository = require('../repositories/user-repositary');
+const isAuthUser= require('../midleware/isAuth');
+const isCorrectToken= require('../midleware/iscorectToken');
 
-addPageRoute.get('/', (req, res) => {
+addPageRoute.get('/',isAuthUser,(req, res) => {
     res.render('add',{
         title:"Add User",
         isAdd: true,
     })
 })
 
-addPageRoute.post('/', async (req, res) => {
+addPageRoute.post('/',isAuthUser,isCorrectToken, async (req, res) => {
     /*const headers = req.headers;*/
     const reqBody = req.body;
     const newUserRepoz =  new userRepository({

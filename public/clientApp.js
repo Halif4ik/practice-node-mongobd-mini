@@ -28,11 +28,14 @@ document.querySelectorAll('.card .card-content .date').forEach(function (dateInE
 
 const cartCont = document.querySelector('.card-container');
 cartCont && cartCont.addEventListener('click', function (event) {
-    const removeBtn = event.target.closest('.js-remove');
-    if (removeBtn) {
-        const idRemoveProd = removeBtn.dataset.id;
+    const decreaseBtn = event.target.closest('.js-remove');
+    if (decreaseBtn) {
+        const idRemoveProd = decreaseBtn.dataset.id;
+        const csrf = decreaseBtn.dataset.csrf;
+
         fetch(`/card/${idRemoveProd}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers:{'x-xcsrf':csrf}
         }).then(function (resp) {
             return resp.json();
         }).then(function (card) {
@@ -62,3 +65,7 @@ cartCont && cartCont.addEventListener('click', function (event) {
     }
 
 });
+
+var instance = M.Tabs.init(document.querySelector('.tabs'),{duration:800});
+/*
+console.log('instance-',instance);*/
