@@ -7,6 +7,7 @@ const Tokens = require('csrf');
 const constants = require('../constants');
 const nodemailer = require('nodemailer');
 const sgTransport = require('nodemailer-sendgrid-transport');
+const {emailValidInBodyMiddleware,checkValidationInMiddleWare,passwordValidInBodyMiddleware,confirmValidInBodyMidl} = require('../midleware/validator')
 let count = 0;
 const mailer = nodemailer.createTransport(sgTransport({
     auth: {
@@ -14,25 +15,19 @@ const mailer = nodemailer.createTransport(sgTransport({
     }
 }));
 
-
 authPageRoute.get('/', (req, res) => {
     res.render('auth/login', {
         title: "Authentication",
         isLogin: true,
-        errorReg: req.flash('wrong registered'),
         errorLog: req.flash('wrong login'),
+        errorReg: req.flash('wrong form'),
     })
 })
 
 /*register new usver*/
-authPageRoute.post('/register', async (req, res) => {
+authPageRoute.post('/register',emailValidInBodyMiddleware(),passwordValidInBodyMiddleware(),confirmValidInBodyMidl(),checkValidationInMiddleWare, async (req, res) => {
     const {first_name, last_name, email, password, img} = req.body;
 
-    if (await Customer.findOne({email})) {
-        req.flash('wrong registered', 'User with this email was register')
-        res.redirect('/auth#login');
-        return;
-    }
     /*create secret kay and token for hidden filds in forms*/
     const tokens = new Tokens();
     const secretForCustomer = await tokens.secret();
@@ -104,3 +99,4 @@ authPageRoute.get('/logout', async (req, res) => {
     });
 
 })
+
