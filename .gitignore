@@ -4,4 +4,4 @@
 /dist/routs
 /dist/index.js
 .idea
-constants.js
+const.dev.js

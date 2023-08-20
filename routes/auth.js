@@ -4,35 +4,30 @@ const authPageRoute = Router();
 const Customer = require('../repositories/customer')
 module.exports = authPageRoute;
 const Tokens = require('csrf');
-const constants = require('../constants');
+const {SEND_GRID_API_KEY,BASE_URL,HOST_EMAIL} = require('../constants');
 const nodemailer = require('nodemailer');
 const sgTransport = require('nodemailer-sendgrid-transport');
+const {emailValidInBodyMiddleware,checkValidationInMiddleWare,passwordValidInBodyMiddleware,confirmValidInBodyMidl} = require('../midleware/validator')
 let count = 0;
 const mailer = nodemailer.createTransport(sgTransport({
     auth: {
-        api_key: constants.SEND_GRID_API_KEY,
+        api_key: SEND_GRID_API_KEY,
     }
 }));
-
 
 authPageRoute.get('/', (req, res) => {
     res.render('auth/login', {
         title: "Authentication",
         isLogin: true,
-        errorReg: req.flash('wrong registered'),
         errorLog: req.flash('wrong login'),
+        errorReg: req.flash('wrong form'),
     })
 })
 
 /*register new usver*/
-authPageRoute.post('/register', async (req, res) => {
+authPageRoute.post('/register',emailValidInBodyMiddleware(),passwordValidInBodyMiddleware(),confirmValidInBodyMidl(),checkValidationInMiddleWare, async (req, res) => {
     const {first_name, last_name, email, password, img} = req.body;
 
-    if (await Customer.findOne({email})) {
-        req.flash('wrong registered', 'User with this email was register')
-        res.redirect('/auth#login');
-        return;
-    }
     /*create secret kay and token for hidden filds in forms*/
     const tokens = new Tokens();
     const secretForCustomer = await tokens.secret();
@@ -54,13 +49,13 @@ authPageRoute.post('/register', async (req, res) => {
 
         await mailer.sendMail({
             to: [email],
-            from: constants.HOST_EMAIL,
+            from: HOST_EMAIL,
             subject: `You ${first_name + " " + last_name} are registered on exchange of developers`,
             text: `Lorem ipsum dolor sit amet.`,
             html: `<h1>Thanks very match!</h1>
                     <p> You created account with this email- ${email}</p>
                     <hr/>
-                    <a href="${constants.BASE_URL}">Our exchange of developers</a>
+                    <a href="${BASE_URL}">Our exchange of developers</a>
 `
         }, function (err, res) {
             if (err) console.log('errsendMail-', err)
@@ -104,3 +99,4 @@ authPageRoute.get('/logout', async (req, res) => {
     });
 
 })
+
