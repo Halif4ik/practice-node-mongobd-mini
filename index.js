@@ -12,15 +12,17 @@ const allUPageRoute = require('./routes/all');
 const addPageRoute = require('./routes/add');
 const ordersRoute = require('./routes/orders');
 const authPageRoute = require('./routes/auth');
+const profileRoute = require('./routes/profine');
 const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const varMiddlewareFunction = require('./midleware/authVar');
 const customerAddMiddleware = require('./midleware/customerMidleware');
+const allWrongRouts = require('./midleware/allWrongRouts');
 var flash = require('connect-flash');
-const constants = require('./constants');
-
+const {mongoURL} = require('./constants');
+console.log('mongoURL',mongoURL);
 
 const hbs = expHandleB.create({
     defaultLayout: 'index',
@@ -29,14 +31,16 @@ const hbs = expHandleB.create({
 });
 
 const store = new MongoDBStore({
-    uri: constants.mongoURL,
+    uri: mongoURL,
     collection: 'mySessions'
 });
+
 exprApp.engine('hbs', hbs.engine);
 exprApp.set('view engine', 'hbs');
 exprApp.set('views', 'views');
 
 exprApp.use(express.static(path.join(__dirname, 'public')))
+exprApp.use('/uploads',express.static(path.join(__dirname, 'uploads')))
 exprApp.use(express.urlencoded({extended: true}))
 /*options*/
 exprApp.use(session({
@@ -49,6 +53,7 @@ exprApp.use(session({
     },
 }))
 exprApp.use(varMiddlewareFunction);
+/*add in req.customer cur Customer*/
 exprApp.use(customerAddMiddleware);
 exprApp.use(flash());
 
@@ -59,10 +64,14 @@ exprApp.use('/add', addPageRoute);
 exprApp.use('/card', cardRoute);
 exprApp.use('/orders', ordersRoute);
 exprApp.use('/auth', authPageRoute);
+exprApp.use('/profile', profileRoute);
+
+exprApp.use(allWrongRouts);
+
 
 async function start() {
     try {
-        await mongoose.connect(constants.mongoURL, {useNewUrlParser: true});
+        await mongoose.connect(mongoURL, {useNewUrlParser: true});
         exprApp.listen(port, () => {
             console.log(`Example MYapp listening on port ${port}`)
         })
@@ -70,7 +79,6 @@ async function start() {
         console.log(e)
     }
 }
-
 start();
 
 /*start express App*/

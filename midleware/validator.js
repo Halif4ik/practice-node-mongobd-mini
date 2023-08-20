@@ -17,18 +17,18 @@ exports.passwordValidInBodyMiddleware = function () {
     }).isAlphanumeric().withMessage("Password should be longer 5 characters");
 }
 
-exports.confirmValidInBodyMidl = function () {
+/*exports.confirmValidInBodyMidl = function () {
     return body('confirm').custom(async (valueConrfirm, {req}) => {
         req.body['password'].equals(valueConrfirm);
     }).withMessage("Password and confirm password should be equals");
-}
+}*/
 
-/*exports.confirmValidInBodyMidl = function () {
+exports.confirmValidInBodyMidl = function () {
     return body('confirm').custom(async (valueConrfirm, {req}) => {
         if (req.body.password !== (valueConrfirm)) throw new Error('Password and confirm password should be equals');
         return true;
     });
-}*/
+}
 
 exports.urlValidMiddleware = function () {
     return query('person').isLength({min: 3, max: 100}).escape().withMessage("Query should be 3 ");
@@ -42,6 +42,6 @@ exports.checkValidationInMiddleWare = function (req, res, next) {
     else {
         req.flash('wrong form', errors.array()[0]['msg']);
         res.status(422).redirect('/auth#register');
-        /*res.status(422).send({errors: errors.array()});*/
+        /*res.status(422).send({errors: errors.array()}); if we response for fetch req*/
     }
 }

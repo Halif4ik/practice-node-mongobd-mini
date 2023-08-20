@@ -7,8 +7,9 @@ const isAuthUser = require('../midleware/isAuth');
 
 allUPageRoute.get('/', async (req, res) => {
     const arrAllUsers = await UserRepository.find({}).populate('userId', 'email firstName').select('email firstName price img').lean();
-   /* console.log('req.sessionis-', req.session);
-    console.log('locals-', res.locals);*/
+    /*console.log('req.sessionis-', req.session.customer);
+    console.log('req-', req.customer);
+    .toObject() === .lean()*/
 
     res.render('all', {
         title: "About",

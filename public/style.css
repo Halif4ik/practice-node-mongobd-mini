@@ -85,3 +85,7 @@ form[action^="/all/edit/"] {
     padding: 5px;
     color: #508282;
 }
+.col.s6>.avatar{
+    width: auto;
+    height: 220px;
+}

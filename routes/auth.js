@@ -4,14 +4,14 @@ const authPageRoute = Router();
 const Customer = require('../repositories/customer')
 module.exports = authPageRoute;
 const Tokens = require('csrf');
-const constants = require('../constants');
+const {SEND_GRID_API_KEY,BASE_URL,HOST_EMAIL} = require('../constants');
 const nodemailer = require('nodemailer');
 const sgTransport = require('nodemailer-sendgrid-transport');
 const {emailValidInBodyMiddleware,checkValidationInMiddleWare,passwordValidInBodyMiddleware,confirmValidInBodyMidl} = require('../midleware/validator')
 let count = 0;
 const mailer = nodemailer.createTransport(sgTransport({
     auth: {
-        api_key: constants.SEND_GRID_API_KEY,
+        api_key: SEND_GRID_API_KEY,
     }
 }));
 
@@ -49,13 +49,13 @@ authPageRoute.post('/register',emailValidInBodyMiddleware(),passwordValidInBodyM
 
         await mailer.sendMail({
             to: [email],
-            from: constants.HOST_EMAIL,
+            from: HOST_EMAIL,
             subject: `You ${first_name + " " + last_name} are registered on exchange of developers`,
             text: `Lorem ipsum dolor sit amet.`,
             html: `<h1>Thanks very match!</h1>
                     <p> You created account with this email- ${email}</p>
                     <hr/>
-                    <a href="${constants.BASE_URL}">Our exchange of developers</a>
+                    <a href="${BASE_URL}">Our exchange of developers</a>
 `
         }, function (err, res) {
             if (err) console.log('errsendMail-', err)
