@@ -1,19 +1,18 @@
 <div class="auth" style="padding-top: 1rem">
 
-
 <div class="row">
-    <div class="col s12">
-        <ul class="tabs">
-            <li class="tab col s6"><a class="active" href="#login">Sing in</a></li>
-            <li class="tab col s6"><a  href="#register">Register</a></li>
-        </ul>
-    </div>
     {{#if errorReg}}
         <p class="alert">{{errorReg}}</p>
     {{else if errorLog}}
         <p class="alert">{{errorLog}}</p>
     {{/if}}
 
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab col s6"><a class="active" href="#login">Sing in</a></li>
+            <li class="tab col s6"><a  href="#register">Register</a></li>
+        </ul>
+    </div>
     <div id="login" class="col s6 offset-s3">
         <h3>Sing in exchange</h3>
         <form action="/auth/login" method="POST">
@@ -38,7 +37,7 @@
         </form></div>
     <div id="register" class="col s6 offset-s3">
         <h3>Create account</h3>
-        <form action="/auth/register" method="POST">
+        <form action="/auth/register" method="POST" >
             <div class="row">
                 <div class="input-field col s6">
                     <!-- <i class="material-icons prefix">account_circle</i>-->
