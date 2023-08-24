@@ -20,11 +20,9 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const varMiddlewareFunction = require('./midleware/authVar');
 const customerAddMiddleware = require('./midleware/customerMidleware');
 const allWrongRouts = require('./midleware/allWrongRouts');
-const flash = require('connect-flash');
-const helmet = require("helmet");
-const compression = require('compression')
+var flash = require('connect-flash');
 const {mongoURL} = require('./constants');
-
+console.log('mongoURL',mongoURL);
 
 const hbs = expHandleB.create({
     defaultLayout: 'index',
@@ -43,7 +41,8 @@ exprApp.set('views', 'views');
 
 exprApp.use(express.static(path.join(__dirname, 'public')))
 exprApp.use('/uploads',express.static(path.join(__dirname, 'uploads')))
-exprApp.use(express.urlencoded({extended: true}))
+exprApp.use(express.urlencoded({extended: true}))/*todo*/
+
 /*options*/
 exprApp.use(session({
     secret: 'some secret',
@@ -58,8 +57,6 @@ exprApp.use(varMiddlewareFunction);
 /*add in req.customer cur Customer*/
 exprApp.use(customerAddMiddleware);
 exprApp.use(flash());
-exprApp.use(helmet());
-exprApp.use(compression())
 
 exprApp.use(bodyParser({}));
 exprApp.use('/', mainPageRoute);

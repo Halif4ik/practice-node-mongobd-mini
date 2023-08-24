@@ -3,6 +3,7 @@ const profileRoute = Router();
 const isAuthUser = require('../midleware/isAuth');
 const Customer = require('../repositories/customer')
 const multer = require('multer')
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads')
