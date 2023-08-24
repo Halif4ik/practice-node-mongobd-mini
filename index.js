@@ -1,7 +1,4 @@
-/*import {mainPageRoute} from "./routes/main";*/
-
 const bodyParser = require('body-parser');
-/*import bodyParser from 'body-parser'*/
 const express = require('express');
 const expHandleB = require('express-handlebars')
 const exprApp = express()
@@ -41,7 +38,7 @@ exprApp.set('views', 'views');
 
 exprApp.use(express.static(path.join(__dirname, 'public')))
 exprApp.use('/uploads',express.static(path.join(__dirname, 'uploads')))
-exprApp.use(express.urlencoded({extended: true}))/*todo*/
+exprApp.use(express.urlencoded({extended: true}))
 
 /*options*/
 exprApp.use(session({
@@ -58,7 +55,7 @@ exprApp.use(varMiddlewareFunction);
 exprApp.use(customerAddMiddleware);
 exprApp.use(flash());
 
-exprApp.use(bodyParser({}));
+/*exprApp.use(bodyParser({}));*/
 exprApp.use('/', mainPageRoute);
 exprApp.use('/all', allUPageRoute);
 exprApp.use('/add', addPageRoute);
